@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
-import server from "./infrastruture/server";
-import rootRouter from "./infrastruture/routes/RootRoutes";
-import authRouter from "./infrastruture/routes/AuthRoutes";
-import entriesRouter from "./infrastruture/routes/EntriesRoutes";
-import userRouter from "./infrastruture/routes/UserRoutes";
+import server from "./infrastructure/server";
+import rootRouter from "./infrastructure/routes/RootRoutes";
+import authRouter from "./infrastructure/routes/AuthRoutes";
+import entriesRouter from "./infrastructure/routes/EntriesRoutes";
+import userRouter from "./infrastructure/routes/UserRoutes";
 
 dotenv.config();
 const PORT = process.env.PORT;
