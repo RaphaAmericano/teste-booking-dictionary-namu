@@ -22,7 +22,7 @@ model User {
 model Auth {
   id        String   @id @default(uuid())
   password  String
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
+  created_at DateTime @default(now())
+  user      User     @relation(fields: [user_id], references: [id])
+  user_id    String   @unique
 }
