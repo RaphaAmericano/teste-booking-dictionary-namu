@@ -1,10 +1,12 @@
 import request from "supertest";
 import { Application } from "express";
+import jwt from 'jsonwebtoken';
 import { AuthService } from "../../../application/services/AuthService";
 import server from "../../server";
-import { CreateAuthWithUserResponseDto } from "../../../domain/entities/Auth";
+import { AuthResponseDto, CreateAuthWithUserResponseDto } from "../../../domain/entities/Auth";
 
 jest.mock("../../../application/services/AuthService");
+jest.mock("jsonwebtoken")
 
 describe("Auth Routes", () => {
   let app: Application;
@@ -14,6 +16,10 @@ describe("Auth Routes", () => {
   });
 
   it("should return 201 when create a new user", async () => {
+    (jwt.sign as jest.Mock).mockReturnValue(
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE5ZTNiODgyLTc3YTYtNDliZC05MDgxLTUxYjNkYzVjOTU1MiIsIm5hbWUiOiJKb8OjbyBTaWx2YSIsImlhdCI6MTczMjkwODUyOCwiZXhwIjoxNzMyOTEyMTI4fQ.kS7EbpcMxmGgbpZaQ4CMW7AxpdAYBjVvm8g27yVcFWM"
+    )
+
     const mockDataResponse = {
       id: "09e5fb67-b6ec-448a-bf1f-879ce17ab6a0",
       password: "12345",
@@ -28,6 +34,12 @@ describe("Auth Routes", () => {
       },
     } as CreateAuthWithUserResponseDto;
 
+    const expectedResponse:AuthResponseDto = {
+      id: mockDataResponse.user.id,
+      name: mockDataResponse.user.name,
+      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE5ZTNiODgyLTc3YTYtNDliZC05MDgxLTUxYjNkYzVjOTU1MiIsIm5hbWUiOiJKb8OjbyBTaWx2YSIsImlhdCI6MTczMjkwODUyOCwiZXhwIjoxNzMyOTEyMTI4fQ.kS7EbpcMxmGgbpZaQ4CMW7AxpdAYBjVvm8g27yVcFWM",
+    }
+    
     const authServiceMock = AuthService.prototype.createWithUser as jest.Mock;
     authServiceMock.mockResolvedValue(mockDataResponse);
 
@@ -37,9 +49,6 @@ describe("Auth Routes", () => {
     });
 
     expect(response.status).toBe(201);
-    expect(response.body).toEqual({
-      message: "Usuário criado com sucesso!",
-      data: mockDataResponse,
-    });
+    expect(response.body).toEqual(expectedResponse);
   });
 });

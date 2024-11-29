@@ -12,6 +12,7 @@ PassportConfig.configure('jwt', JwtStrategyService.getStrategy())
 PassportConfig.configure('local', new LocalStrategyService(AuthPrismaImplementation.findByEmail).getStategy())
 
 const server = express()
+// TODO: cors
 server.use(express.json())
 
 server.use(rootRouter);
