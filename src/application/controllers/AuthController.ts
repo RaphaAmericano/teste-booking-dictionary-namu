@@ -24,11 +24,13 @@ export class AuthController {
       return res.status(400).json({ message: error.message });
     }
 
-    req.user = data
+    req.user = { ...data }
     return next()
   }
 
-  public async signin(req: Request, res: Response): Promise<any> {
-    return res.status(201).json({ message: "User created" });
+  public async signin(req: Request, res: Response, next: NextFunction): Promise<any> {
+    const { user } = req;
+    return next()
+    // return res.status(201).json({ message: "User created" });
   }
 }

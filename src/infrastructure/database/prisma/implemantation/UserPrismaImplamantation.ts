@@ -8,4 +8,5 @@ export class UserPrismaImplementation {
         })
         return result
     }
+
 }

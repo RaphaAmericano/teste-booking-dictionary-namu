@@ -1,4 +1,5 @@
 import {
+  Auth,
   CreateAuthDto,
   CreateAuthWithUserDto,
 } from "../../../../domain/entities/Auth";
@@ -39,4 +40,17 @@ export class AuthPrismaImplementation {
     });
     return result;
   }
+
+  static async findByEmail(email: string): Promise<any> {
+    const result = await auth.findUnique({
+      where: {
+        email,
+      },
+      include: {
+        user: true
+      }
+    });
+    return result ;
+  }
+
 }

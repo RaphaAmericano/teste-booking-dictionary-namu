@@ -19,6 +19,7 @@ export class AuthMiddleware {
                     return res.status(401).json({ message: "Unauthorized", error: info.message });
                 }
                 req.user = user
+                return next()
             })(req,res, next);
 
         }
