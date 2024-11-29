@@ -12,6 +12,6 @@ const authRepository = new AuthRepositoryImpl({
 const authService = new AuthService(authRepository);
 const authController = new AuthController(authService);
 
-router.post("/signup", authController.signup);
-router.post("/signin", authController.signin);
+router.post("/signup", authController.signup.bind(authController));
+router.post("/signin", authController.signin.bind(authController));
 export default router;
