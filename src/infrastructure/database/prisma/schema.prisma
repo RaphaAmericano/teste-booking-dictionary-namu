@@ -30,3 +30,9 @@ model Auth {
   user       User     @relation(fields: [user_id], references: [id])
   user_id    String   @unique
 }
+
+model Word {
+  id     String @id @default(uuid())
+  word   String
+  number Int
+}
