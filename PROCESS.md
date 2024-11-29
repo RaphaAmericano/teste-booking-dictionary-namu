@@ -1,12 +1,17 @@
 # Development Process of the App
 
-## Overview
-This document outlines the development process for the application, detailing the steps taken from initial planning to deployment.
+## Primeiras configurações
+Optei por iniciar o desenvolvimento realizando uma configuração basica do servidor, com o esqueleto do roteamento indicado no projeto. Optei por usar o framework Express.
+Em seguida configurei um docker compose com imagens de Postgres e Redis para banco de dados e cache.
+Para concluir as configurações iniciais, conectei a aplicação ao banco de dados. 
+Escolhi o ORM Prisma para fazer o manipulação do banco de dados.
 
-## 1. Planning
-- Define the project scope and objectives.
-- Identify stakeholders and gather requirements.
-- Create a project timeline and milestones.
+## 1. Auth/User
+- Optei por iniciar o desenvolvimento por essas entidades, pois grande parte das requisiçõe iriam necessitar de autenticação.
+- Opetei por dividir usuário em duas entidades para isolar os dados de autenticação do usuario em parte do banco dos de visualização.
+- Em seguida desenvolvi as classes relacionadas ao User e Auth, com o objetivo de realizar a primeira inserção no banco a partir de uma requisição http.
+- Com o fluxo de dados funcionando procurei melhorar as interfaces criando os DTOs.
+- Para finalizar essa primeira parte de Auth/User, desenvolvi casos de testes para o AuthController e AuthRoutes.
 
 ## 2. Design
 - Develop wireframes and prototypes.
