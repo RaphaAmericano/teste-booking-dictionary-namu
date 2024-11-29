@@ -1,7 +1,6 @@
 import request from "supertest";
-import express, { Application } from "express";
+import { Application } from "express";
 import { AuthService } from "../../../application/services/AuthService";
-import { AuthController } from "../../../application/controllers/AuthController";
 import server from "../../server";
 import { CreateAuthWithUserResponseDto } from "../../../domain/entities/Auth";
 
