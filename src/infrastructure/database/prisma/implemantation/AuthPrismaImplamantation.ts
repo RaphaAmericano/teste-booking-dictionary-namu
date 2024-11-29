@@ -7,9 +7,10 @@ const { auth } = prisma;
 
 export class AuthPrismaImplementation {
   static async create(data: CreateAuthDto): Promise<any> {
-    const { password, id } = data;
+    const { password, email, id } = data;
     const result = await auth.create({
       data: {
+        email,
         password,
         user: {
           connect: { 
@@ -32,6 +33,9 @@ export class AuthPrismaImplementation {
           },
         },
       },
+      include: {
+        user: true,
+      }
     });
     return result;
   }

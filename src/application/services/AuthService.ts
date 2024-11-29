@@ -1,4 +1,4 @@
-import { Auth, CreateAuthDto, CreateAuthWithUserDto } from "../../domain/entities/Auth";
+import { Auth, CreateAuthDto, CreateAuthWithUserDto, CreateAuthWithUserResponseDto } from "../../domain/entities/Auth";
 import { AuthRepositoryImpl } from "../../infrastructure/database/AuthRepositoryImpl";
 
 export class AuthService {
@@ -8,7 +8,7 @@ export class AuthService {
         return this.authRepository.create(auth);
     }
 
-    public createWithUser(auth: CreateAuthWithUserDto): Promise<Auth> {
+    public createWithUser(auth: CreateAuthWithUserDto): Promise<CreateAuthWithUserResponseDto> {
         return this.authRepository.createWithUser(auth)
     }
 

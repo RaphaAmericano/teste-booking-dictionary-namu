@@ -1,10 +1,12 @@
 export interface UserId {
-    id?: string
+  id?: string;
 }
 export interface User extends UserId {
-    name: string
+  name: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface CreateUserDto extends User {
-    auth_id: string
+export interface CreateUserDto extends Pick<User, "name"> {
+  auth_id: string;
 }

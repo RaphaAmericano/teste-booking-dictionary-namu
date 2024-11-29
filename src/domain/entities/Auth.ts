@@ -1,14 +1,23 @@
+import { User } from "./User";
+
 export interface AuthId {
-    id?: string
+  id?: string;
 }
 
 export interface Auth extends AuthId {
-    password: string
-    created_at?: Date
+  password: string;
+  email: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface CreateAuthDto extends Pick<Auth, 'password' | 'id' >{}
+export interface CreateAuthDto extends Pick<Auth, "password" | "email" | "id"> {}
 
-export interface CreateAuthWithUserDto extends Pick<Auth, 'password' > {
-    name: string
+export interface CreateAuthWithUserDto extends Pick<Auth, "password" | "email"> {
+  name: string;
+}
+
+export interface CreateAuthWithUserResponseDto extends Auth {
+  user_id: string;
+  user: User;
 }

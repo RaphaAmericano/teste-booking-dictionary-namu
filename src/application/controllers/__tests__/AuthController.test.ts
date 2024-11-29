@@ -1,7 +1,10 @@
 import { AuthController } from "../AuthController";
 import { AuthService } from "../../services/AuthService";
 import { Request, Response } from "express";
-import { CreateAuthWithUserDto } from "../../../domain/entities/Auth";
+import {
+  CreateAuthWithUserDto,
+  CreateAuthWithUserResponseDto,
+} from "../../../domain/entities/Auth";
 describe("AuthController", () => {
   let authServiceMock: jest.Mocked<AuthService>;
   let authController: AuthController;
@@ -14,52 +17,42 @@ describe("AuthController", () => {
     authController = new AuthController(authServiceMock);
   });
 
-
   it("should return a 201 status code when creating a new user", async () => {
     const req = {
-        body: {
-            password: "12345",
-            name: "João Silva"
-        } as CreateAuthWithUserDto,
-    } as Request
+      body: {
+        name: "João Silva",
+        password: "12345",
+      } as CreateAuthWithUserDto,
+    } as Request;
 
     const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
     } as unknown as Response;
 
-
-    // TODO: Corrigir essa resposta
-    authServiceMock.createWithUser.mockResolvedValueOnce({
-      id: "1",
+    const mockDataResponse = {
+      id: "09e5fb67-b6ec-448a-bf1f-879ce17ab6a0",
       password: "12345",
-      created_at: new Date(),
-    //   updated_at: new Date(),
-    //   user: {
-    //     id: "1",
-    //     name: "João Silva",
-    //     createdAt: new Date(),
-    //     updatedAt: new Date(),
-    //   },
-    });
+      created_at: "2024-11-29T04:21:53.410Z",
+      updated_at: "2024-11-29T04:21:53.410Z",
+      user_id: "19e3b882-77a6-49bd-9081-51b3dc5c9552",
+      user: {
+        id: "19e3b882-77a6-49bd-9081-51b3dc5c9552",
+        name: "João Silva",
+        created_at: "2024-11-29T04:21:53.410Z",
+        updated_at: "2024-11-29T04:21:53.410Z",
+      },
+    } as CreateAuthWithUserResponseDto;
+    // TODO: Corrigir essa resposta
+    authServiceMock.createWithUser.mockResolvedValueOnce(mockDataResponse);
 
-    await authController.signup(req, res)
+    await authController.signup(req, res);
 
     expect(authServiceMock.createWithUser).toHaveBeenCalledWith(req.body);
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith({
-      id: "1",
-      password: "12345",
-      created_at: expect.any(Date),
-    //   updated_at: expect.any(Date),
-    //   user: {
-    //     id: "1",
-    //     name: "João Silva",
-    //     createdAt: expect.any(Date),
-    //     updatedAt: expect.any(Date),
-    //   },
+      message: "Usuário criado com sucesso!",
+      data: mockDataResponse
     });
-
-
   });
 });
