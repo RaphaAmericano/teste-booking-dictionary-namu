@@ -4,10 +4,11 @@ export interface AuthId {
 
 export interface Auth extends AuthId {
     password: string
-    createdAt: Date
+    created_at?: Date
 }
 
-export interface CreateAuthDto extends Auth {
-    password: string
+export interface CreateAuthDto extends Pick<Auth, 'password' | 'id' >{}
+
+export interface CreateAuthWithUserDto extends Pick<Auth, 'password' > {
     name: string
 }

@@ -5,4 +5,6 @@ export interface User extends UserId {
     name: string
 }
 
-export interface CreateUserDto extends User {}
+export interface CreateUserDto extends User {
+    auth_id: string
+}

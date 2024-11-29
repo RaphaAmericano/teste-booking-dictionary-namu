@@ -5,7 +5,7 @@ interface UserRepositoryImplProps{
 }
 
 export class UserRepositoryImpl implements UserRepository {
-    private createFunction:  (user: User) => Promise<User>
+    private createFunction:  (user: CreateUserDto) => Promise<User>
     constructor(props:UserRepositoryImplProps) {
         this.createFunction = props.createFunction;
     }
