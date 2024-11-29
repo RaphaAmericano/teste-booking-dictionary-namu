@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AuthService } from "../services/AuthService";
 import { CreateAuthWithUserDto, CreateAuthWithUserResponseDto } from "../../domain/entities/Auth";
 import { PromiseHandle } from "../../shared/utils/PromiseHandle";
@@ -12,7 +12,8 @@ export class AuthController {
 
   public async signup(
     req: Request<{}, {}, CreateAuthWithUserDto>,
-    res: Response<{ message: string, data?: CreateAuthWithUserResponseDto | null  }>
+    res: Response<{ message: string, data?: CreateAuthWithUserResponseDto | null }>,
+    next: NextFunction
   ): Promise<any> {
     const { body } = req;
     const { data, error } = await PromiseHandle.wrapPromise<CreateAuthWithUserResponseDto>(
@@ -23,9 +24,8 @@ export class AuthController {
       return res.status(400).json({ message: error.message });
     }
 
-    return res
-      .status(201)
-      .json({ message: `Usuário criado com sucesso!`, data });
+    req.user = data
+    return next()
   }
 
   public async signin(req: Request, res: Response): Promise<any> {

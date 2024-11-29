@@ -11,13 +11,21 @@ export interface Auth extends AuthId {
   updated_at?: string;
 }
 
-export interface CreateAuthDto extends Pick<Auth, "password" | "email" | "id"> {}
+export interface CreateAuthDto
+  extends Pick<Auth, "password" | "email" | "id"> {}
 
-export interface CreateAuthWithUserDto extends Pick<Auth, "password" | "email"> {
+export interface CreateAuthWithUserDto
+  extends Pick<Auth, "password" | "email"> {
   name: string;
 }
 
 export interface CreateAuthWithUserResponseDto extends Auth {
   user_id: string;
-  user: User;
+  user: Omit<User, "id"> & { id: string };
+}
+
+export interface AuthResponseDto {
+  id: string;
+  name: string;
+  token: string;
 }
