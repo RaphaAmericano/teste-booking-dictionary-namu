@@ -7,7 +7,6 @@ const { word } = prisma;
 export async function wordsSeed() {
   const data = await WordsService.fetchWords();
   const reduce_data = WordsService.reduceWords(data);
-  console.log(reduce_data);
   const createMany = word.createMany({
     data: reduce_data,
     skipDuplicates: true,

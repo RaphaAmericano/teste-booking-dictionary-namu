@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { AuthService } from "../services/AuthService";
 import { CreateAuthWithUserDto, CreateAuthWithUserResponseDto } from "../../domain/entities/Auth";
 import { PromiseHandle } from "../../shared/utils/PromiseHandle";
+import { HttpResponse } from "../../infrastructure/utils/HttpResponse";
 
 export class AuthController {
   constructor(private readonly authService: AuthService) {
@@ -19,9 +20,9 @@ export class AuthController {
     const { data, error } = await PromiseHandle.wrapPromise<CreateAuthWithUserResponseDto>(
       this.authService.createWithUser(body)
     );
-    
+    console.log(data)
     if (error) {
-      return res.status(400).json({ message: error.message });
+      return HttpResponse.error(res);
     }
 
     req.user = { ...data }
@@ -29,8 +30,6 @@ export class AuthController {
   }
 
   public async signin(req: Request, res: Response, next: NextFunction): Promise<any> {
-    const { user } = req;
     return next()
-    // return res.status(201).json({ message: "User created" });
   }
 }

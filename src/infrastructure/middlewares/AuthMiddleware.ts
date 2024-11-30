@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, } from "express";
 import passport, { AuthenticateOptions } from "passport";
+import { HttpResponse } from "../utils/HttpResponse";
 
 export class AuthMiddleware {
     private readonly strategyName: string
@@ -13,10 +14,12 @@ export class AuthMiddleware {
         return (req: Request, res: Response, next: NextFunction): void => {
             passport.authenticate(this.strategyName, this.options, (err: any | Error, user: any, info: any | { message: string }) => {
                 if(err){
-                    return res.status(401).json({ message: "Unauthorized", error: err.message });
+                    return HttpResponse.error(res)
+                    // return res.status(401).json({ message: "Unauthorized", error: err.message });
                 }
                 if(!user){
-                    return res.status(401).json({ message: "Unauthorized", error: info.message });
+                    return HttpResponse.error(res)
+                    // return res.status(401).json({ message: "Unauthorized", error: info.message });
                 }
                 req.user = user
                 return next()

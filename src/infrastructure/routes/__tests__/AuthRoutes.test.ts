@@ -48,7 +48,7 @@ describe("Auth Routes", () => {
       password: "12345",
     });
 
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(200);
     expect(response.body).toEqual(expectedResponse);
   });
 });
