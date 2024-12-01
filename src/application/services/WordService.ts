@@ -44,4 +44,7 @@ export class WordService {
     return this.wordRepository.getByTerm(search, limit, skip)
   }
 
+  public async getWord(word:string){
+    return this.wordRepository.getByWord(word)
+  }
 }

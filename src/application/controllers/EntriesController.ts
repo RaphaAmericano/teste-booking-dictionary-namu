@@ -28,4 +28,16 @@ export class EntriesController {
     return 
   }
 
+  public async get_word_by_term(req: Request<{ word: string }, {}, {}, {}>, res: Response, next: NextFunction) : Promise<void> {
+    const { word } = req.params
+    const { data, error  } = await PromiseHandle.wrapPromise(this.wordService.getWord(word))
+    if (error) {
+      HttpResponse.error(res);
+      return 
+    } 
+
+    HttpResponse.success(res, { ...data  });
+    return 
+  }
+
 }

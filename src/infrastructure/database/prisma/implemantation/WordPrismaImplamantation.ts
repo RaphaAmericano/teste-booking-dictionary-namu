@@ -56,4 +56,13 @@ export class WordPrismaImplamantation {
      };
   }
 
+  static async getWordByTerm(term: string): Promise<any> {
+    const result = await word.findFirst({
+      where: {
+        word: term,
+      },
+    })
+    return result;
+  }
+
 }
