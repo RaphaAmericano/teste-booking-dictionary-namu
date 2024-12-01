@@ -11,6 +11,6 @@ export class UserRepositoryImpl implements UserRepository {
     }
     async create(user: CreateUserDto): Promise<User> {
         const result = await this.createFunction(user);
-        return user;
+        return result;
     }
 }

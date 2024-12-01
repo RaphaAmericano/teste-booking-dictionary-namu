@@ -1,4 +1,4 @@
-import * as prismaClient from "../client"
+import { prisma } from "../client"
 import { wordsSeed } from "./words"
 
 async function main(){
@@ -11,6 +11,5 @@ main()
         process.exit(1)
     })
     .finally(() => {
-        prismaClient.prisma
-        .$disconnect()
+        prisma.$disconnect()
     })

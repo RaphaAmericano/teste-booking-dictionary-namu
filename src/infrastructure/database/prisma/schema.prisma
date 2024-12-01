@@ -9,7 +9,7 @@ generator client {
 }
 
 generator seed {
-  provider = "node ./src/infrasctructure/database/prisma/seed/seed.ts"
+  provider = "ts-node ./src/infrastructure/database/prisma/seed/seed.ts"
 }
 
 datasource db {
@@ -36,7 +36,50 @@ model Auth {
 }
 
 model Word {
-  id     String @id @default(uuid())
-  word   String
-  number Int
+  id        String     @id @default(uuid())
+  word      String
+  phonetic  String?
+  origin    String?
+  phonetics Phonetic[]
+  meanings  Meaning[]
+}
+
+model Phonetic {
+  id      String  @id @default(uuid())
+  text    String
+  audio   String?
+  word_id String
+  word    Word    @relation(fields: [word_id], references: [id], onDelete: Cascade)
+}
+
+model Meaning {
+  id             String       @id @default(uuid())
+  part_of_Speech String
+  word_id        String
+  word           Word         @relation(fields: [word_id], references: [id], onDelete: Cascade)
+  definitions    Definition[]
+}
+
+model Definition {
+  id         String    @id @default(uuid())
+  definition String
+  example    String?
+  synonyms   Synonym[]
+  antonyms   Antonym[]
+  meaning_id String
+  meaning    Meaning   @relation(fields: [meaning_id], references: [id], onDelete: Cascade)
+}
+
+model Synonym {
+  id            String     @id @default(uuid())
+  synonym       String
+  definition_id String
+  definition    Definition @relation(fields: [definition_id], references: [id])
+}
+
+model Antonym {
+  id            String     @id @default(uuid())
+  antonym       String
+  definition_id String
+  definition    Definition @relation(fields: [definition_id], references: [id])
 }

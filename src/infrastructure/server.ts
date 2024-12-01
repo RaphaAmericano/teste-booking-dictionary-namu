@@ -5,7 +5,7 @@ import { LocalStrategyService } from "./strategies/LocalStrategy";
 import { AuthPrismaImplementation } from "./database/prisma/implemantation/AuthPrismaImplamantation";
 import rootRouter from "./routes/RootRoutes";
 import authRouter from "./routes/AuthRoutes";
-import entriesRouter from "./routes/EntriesRoutes";
+import entryRouter from "./routes/EntryRoutes";
 import userRouter from "./routes/UserRoutes";
 import { RequestTreatmentMiddleware } from "./middlewares/RequestTreatmentMiddleware";
 
@@ -21,7 +21,7 @@ server.use(express.json({
 
 server.use(rootRouter);
 server.use("/auth", authRouter);
-server.use("/entries", entriesRouter);
+server.use("/entries", entryRouter);
 server.use("/user", userRouter);
 
 server.use((error:Error | any, req:Request, res:Response, next:NextFunction) => {

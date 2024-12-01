@@ -20,7 +20,7 @@ export class AuthController {
     const { data, error } = await PromiseHandle.wrapPromise<CreateAuthWithUserResponseDto>(
       this.authService.createWithUser(body)
     );
-    console.log(data)
+    
     if (error) {
       return HttpResponse.error(res);
     }
