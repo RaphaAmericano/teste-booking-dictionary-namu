@@ -5,12 +5,14 @@ import { DictionaryApiService } from "../../application/services/DictionaryApiSe
 import { PromiseHandle } from "../../shared/utils/PromiseHandle";
 import { Word } from "../../domain/entities/Word";
 import { FavoriteService } from "../../application/services/FavoriteService";
+import { HistoryService } from "../../application/services/HistoryService";
 
 
 export class WordMiddleware {
     constructor(
         private readonly wordService: WordService, 
-        private readonly favoriteService: FavoriteService
+        private readonly favoriteService: FavoriteService,
+        private readonly historyService: HistoryService
     ) {}
 
     public async fetchWordDataMiddleware(req: Request, res: Response<{ locals: { word: Word }}>, next: any): Promise<void> {
@@ -36,9 +38,13 @@ export class WordMiddleware {
     }
 
     public async saveViewHistoryMiddleware(req: any, res: Response<{ locals: { word: Word }}>, next: any) {
+        
         const { user } = req
+        console.log(user)
         const { word: { id } } = res.locals
-        const { data, error } = await PromiseHandle.wrapPromise(this.favoriteService.create({user_id: user.id, word_id: id}))
+        console.log(id)
+        const { data, error } = await PromiseHandle.wrapPromise(this.historyService.create({user_id: user.id, word_id: id}))
+
         if(error) {
             HttpResponse.error(res, error)
             return

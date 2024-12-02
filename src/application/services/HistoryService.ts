@@ -1,3 +1,4 @@
+import { CreateHistoryDto } from "../../domain/entities/History";
 import { HistoryRepositoryImpl } from "../../infrastructure/database/HistoryRepositoryImpl";
 
 export class HistoryService {

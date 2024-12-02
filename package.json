@@ -11,6 +11,7 @@
     "test:watch": "jest --watchAll --verbose",
     "prisma:seed": "npx tsx ./src/infrastructure/database/prisma/seed/seed.ts",
     "prisma:generate": "npx prisma generate --schema=src/infrastructure/database/prisma/schema.prisma",
+    "prisma:migrate": "npx prisma migrate dev --schema=src/infrastructure/database/prisma/schema.prisma",
     "dev": "nodemon --watch 'src/' --exec 'ts-node src/index.ts' -e ts"
   },
   "dependencies": {

@@ -14,10 +14,12 @@ export class AuthMiddleware {
         return (req: Request, res: Response, next: NextFunction): void => {
             passport.authenticate(this.strategyName, this.options, (err: any | Error, user: any, info: any | { message: string }) => {
                 if(err){
+                    console.log(err)
                     return HttpResponse.error(res)
                     // return res.status(401).json({ message: "Unauthorized", error: err.message });
                 }
                 if(!user){
+                    
                     return HttpResponse.error(res)
                     // return res.status(401).json({ message: "Unauthorized", error: info.message });
                 }
