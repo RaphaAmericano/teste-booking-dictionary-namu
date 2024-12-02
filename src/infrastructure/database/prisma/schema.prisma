@@ -18,11 +18,13 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
+  id         String     @id @default(uuid())
   name       String
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
   auth       Auth?
+  Favorite   Favorite[]
+  History    History[]
 }
 
 model Auth {
@@ -42,6 +44,8 @@ model Word {
   origin    String?
   phonetics Phonetic[]
   meanings  Meaning[]
+  Favorite  Favorite[]
+  History   History[]
 }
 
 model Phonetic {
@@ -86,4 +90,21 @@ model Antonym {
   antonym       String
   definition_id String
   definition    Definition @relation(fields: [definition_id], references: [id])
+}
+
+model Favorite {
+  id      String @id @default(uuid())
+  user_id String
+  word_id String
+  user    User   @relation(fields: [user_id], references: [id])
+  word    Word   @relation(fields: [word_id], references: [id])
+}
+
+model History {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  user_id    String
+  word_id    String
+  user       User     @relation(fields: [user_id], references: [id])
+  word       Word     @relation(fields: [word_id], references: [id])
 }
