@@ -6,7 +6,7 @@ import { PromiseHandle } from "../../shared/utils/PromiseHandle";
 import { Word } from "../../domain/entities/Word";
 import { FavoriteService } from "../../application/services/FavoriteService";
 import { HistoryService } from "../../application/services/HistoryService";
-import { RedisService } from "../cache/RedisCache";
+import { CacheService } from "../../application/services/CacheService";
 
 
 export class WordMiddleware {
@@ -14,14 +14,13 @@ export class WordMiddleware {
         private readonly wordService: WordService, 
         private readonly favoriteService: FavoriteService,
         private readonly historyService: HistoryService,
-        private readonly cacheService: RedisService 
+        private readonly cacheService: CacheService 
     ) {}
 
     public async fetchWordDataMiddleware(req: Request, res: Response<{ locals: { word: Word }}>, next: any): Promise<void> {
+
         const { word } = res.locals
         const { origin, phonetic, word:word_text } = word
-
-
 
         if(!origin || !phonetic) {
 
@@ -29,8 +28,8 @@ export class WordMiddleware {
 
 
             const { data, error } = await PromiseHandle.wrapPromise(DictionaryApiService.getWord(word_text))
-            console.log(data)
-
+            // console.log(data)
+            await this.cacheService.set('word', data)
             if(data){
                 const reduce_data =  DictionaryApiService.reduceResponseArray(data)
                 // const { data:data_update, error:error_update } = await PromiseHandle.wrapPromise(this.wordService.update(id, reduce_data))

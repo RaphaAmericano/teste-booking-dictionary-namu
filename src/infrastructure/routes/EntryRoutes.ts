@@ -12,6 +12,8 @@ import { HistoryRepositoryImpl } from "../database/HistoryRepositoryImpl";
 import { HistoryPrismaImplamantation } from "../database/prisma/implemantation/HistoryPrismaImplamantation";
 import { HistoryService } from "../../application/services/HistoryService";
 import { AuthMiddleware } from "../middlewares/AuthMiddleware";
+import { RedisCache } from "../cache/RedisCache";
+import { CacheService } from "../../application/services/CacheService";
 const router = Router();
 
 const wordRepository = new WordRepositoryImpl({
@@ -33,11 +35,17 @@ const historyRepository = new HistoryRepositoryImpl({
 const wordService = new WordService(wordRepository);
 const favoriteService = new FavoriteService(favoriteRepository)
 const historyService = new HistoryService(historyRepository)
+const redisCache = new RedisCache();
+const cacheService = new CacheService({
+  getFunction: redisCache.get,
+  setFunction: redisCache.set,
+  deleteFunction: redisCache.delete
+});
 
 const entryController = new EntriesController(wordService, favoriteService);
 
 const entryMiddleware = new EntryMiddleware();
-const wordMiddleware = new WordMiddleware(wordService, favoriteService, historyService);
+const wordMiddleware = new WordMiddleware(wordService, favoriteService, historyService, cacheService);
 const authMiddleware = new AuthMiddleware('jwt');
 
 router.get("/en", entryController.get_all_entries.bind(entryController));

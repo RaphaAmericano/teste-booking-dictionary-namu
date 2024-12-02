@@ -15,7 +15,7 @@ export class CacheService {
         this.deleteFunction = props.deleteFunction;
     }
 
-    async set(key: string, value: any, ttl: number): Promise<void>{
+    async set(key: string, value: any, ttl: number = 3600): Promise<void>{
         await this.setFunction(key, value, ttl)
     }
 
