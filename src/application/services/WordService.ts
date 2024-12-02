@@ -1,7 +1,7 @@
 import axios from "axios";
 import { PromiseHandle } from "../../shared/utils/PromiseHandle";
-import { InserWordDto } from "../../domain/entities/Word";
 import { WordRepositoryImpl } from "../../infrastructure/database/WordRepositoryImpl";
+import { Word } from "../../domain/entities/Word";
 
 export class WordService {
 
@@ -19,18 +19,6 @@ export class WordService {
     return words_data.data;
   }
 
-  public static reduceWords(words: { [key: string]: number }) {
-    const reduce_data = Object.keys(words).reduce(
-      (acc: InserWordDto[], word: string) => {
-        const obj = { word, number: words[word] };
-        acc.push(obj);
-        return acc;
-      },
-      []
-    );
-    return reduce_data;
-  }
-
   public static mapWords(words: { [key: string]: number }) {
     const map_data = Object.keys(words)
     return map_data;
@@ -40,6 +28,7 @@ export class WordService {
     return words.map((word) => ({ word }));
   }
 
+  // * Database funcions
   public async getAllWords(search: string, limit: number, skip: number ) {
     return this.wordRepository.getByTerm(search, limit, skip)
   }
@@ -47,4 +36,11 @@ export class WordService {
   public async getWord(word:string){
     return this.wordRepository.getByWord(word)
   }
+
+  public async update(id: string, data: any) {
+    return this.wordRepository.update(id, data);
+  }
+
+  
+
 }

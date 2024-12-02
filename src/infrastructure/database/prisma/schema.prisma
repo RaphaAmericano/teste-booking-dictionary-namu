@@ -8,9 +8,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator seed {
-  provider = "ts-node ./src/infrastructure/database/prisma/seed/seed.ts"
-}
+// generator seed {
+//   provider = "ts-node ./src/infrastructure/database/prisma/seed/seed.ts"
+// }
 
 datasource db {
   provider = "postgresql"
@@ -50,14 +50,18 @@ model Phonetic {
   audio   String?
   word_id String
   word    Word    @relation(fields: [word_id], references: [id], onDelete: Cascade)
+
+  @@unique([word_id, text])
 }
 
 model Meaning {
   id             String       @id @default(uuid())
-  part_of_Speech String
+  part_of_speech String
   word_id        String
   word           Word         @relation(fields: [word_id], references: [id], onDelete: Cascade)
   definitions    Definition[]
+
+  @@unique([word_id, part_of_speech])
 }
 
 model Definition {

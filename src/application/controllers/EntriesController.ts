@@ -35,8 +35,8 @@ export class EntriesController {
       HttpResponse.error(res);
       return 
     } 
-
-    HttpResponse.success(res, { ...data  });
+    res.locals.word = data
+    next()
     return 
   }
 
