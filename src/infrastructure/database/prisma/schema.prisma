@@ -23,8 +23,8 @@ model User {
   created_at DateTime   @default(now())
   updated_at DateTime   @default(now())
   auth       Auth?
-  Favorite   Favorite[]
-  History    History[]
+  favorite   Favorite[]
+  history    History[]
 }
 
 model Auth {
@@ -44,8 +44,8 @@ model Word {
   origin    String?
   phonetics Phonetic[]
   meanings  Meaning[]
-  Favorite  Favorite[]
-  History   History[]
+  favorite  Favorite[]
+  history   History[]
 }
 
 model Phonetic {
@@ -94,6 +94,7 @@ model Antonym {
 
 model Favorite {
   id      String @id @default(uuid())
+  created_at DateTime @default(now())
   user_id String
   word_id String
   user    User   @relation(fields: [user_id], references: [id])
