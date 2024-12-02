@@ -14,6 +14,7 @@ import { HistoryService } from "../../application/services/HistoryService";
 import { AuthMiddleware } from "../middlewares/AuthMiddleware";
 import { RedisCache } from "../cache/RedisCache";
 import { CacheService } from "../../application/services/CacheService";
+import { ResponseTreatmentMiddleware } from "../middlewares/ResponseTreatmentMiddleware";
 const router = Router();
 
 const wordRepository = new WordRepositoryImpl({
@@ -47,10 +48,12 @@ const entryController = new EntriesController(wordService, favoriteService);
 const entryMiddleware = new EntryMiddleware();
 const wordMiddleware = new WordMiddleware(wordService, favoriteService, historyService, cacheService);
 const authMiddleware = new AuthMiddleware('jwt');
+// const responseTreatmentMiddleware = new ResponseTreatmentMiddleware()
 
 router.get("/en", entryController.get_all_entries.bind(entryController));
 router.get(
   "/en/:word",
+  ResponseTreatmentMiddleware.setResponseTime,
   authMiddleware.authenticate(),
   entryController.get_word_by_term.bind(entryController),
   wordMiddleware.saveViewHistoryMiddleware.bind(wordMiddleware),

@@ -7,6 +7,7 @@ import { Word } from "../../domain/entities/Word";
 import { FavoriteService } from "../../application/services/FavoriteService";
 import { HistoryService } from "../../application/services/HistoryService";
 import { CacheService } from "../../application/services/CacheService";
+import { RequestUtils } from "../utils/RequestUtils";
 
 
 export class WordMiddleware {
@@ -17,14 +18,17 @@ export class WordMiddleware {
         private readonly cacheService: CacheService 
     ) {}
 
-    public async fetchWordDataMiddleware(req: Request, res: Response<{ locals: { word: Word }}>, next: any): Promise<void> {
+    public async fetchWordDataMiddleware(req: Request, res: Response<{ locals: { word: Word, start: [number, number] }}>, next: any): Promise<void> {
 
-        const { word } = res.locals
+        const { word, start } = res.locals
         const { word:word_text } = word
+
         const cache = await this.cacheService.get(`word:${word.word}`)
+        console.log(cache)
         if(cache){
             // TODO: adicionar os headers
             res.setHeader('x-cache', 'HIT')
+            res.setHeader('x-response-time', `${RequestUtils.get_request_end_time(start)}ms`)
             HttpResponse.success(res, { ...word, ...cache })
             next();
             return
@@ -38,14 +42,12 @@ export class WordMiddleware {
             const { data:data_update, error:error_update } = await PromiseHandle.wrapPromise(this.wordService.update(word.id, reduce_data))
             // console.log("update:",data_update)
             res.locals.word = {...word, ...data}
-            res.setHeader('x-cache', 'MISS')
+            res.setHeader('x-response-time', `${RequestUtils.get_request_end_time(start)}ms`)
             HttpResponse.success(res, { ...word, ...reduce_data })
             return 
         }
         
-
-        
-
+        res.setHeader('x-response-time', `${RequestUtils.get_request_end_time(start)}ms`)
         HttpResponse.success(res, { ...word })
         next();
         return
