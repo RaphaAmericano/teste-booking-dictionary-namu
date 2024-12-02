@@ -17,6 +17,11 @@ services:
 
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - booking-dictionary
 
@@ -34,9 +39,9 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    # env_file: .env
+    env_file: .env
     environment:
-      DATABASE_URL: postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@booking_db:5432/${DATABASE_NAME}
+      DATABASE_URL: postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@localhost:5432/${DATABASE_NAME}
       REDIS_URL: redis://booking-dictionary-redis:6379
       SECRET_KEY: ${SECRET_KEY}
       PORT: ${PORT}

@@ -17,6 +17,10 @@ RUN npm run build
 
 RUN npm run prisma:generate
 
+# RUN npm run prisma:migrate
+
+# RUN npm run prisma:seed
+
 # Expõe a porta onde a aplicação será executada
 EXPOSE 3000
 
