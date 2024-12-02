@@ -20,26 +20,31 @@ export class WordMiddleware {
     public async fetchWordDataMiddleware(req: Request, res: Response<{ locals: { word: Word }}>, next: any): Promise<void> {
 
         const { word } = res.locals
-        const { origin, phonetic, word:word_text } = word
-
-        if(!origin || !phonetic) {
-
-            // TODO: realizar a checagem no cache e procedimento
-
-
-            const { data, error } = await PromiseHandle.wrapPromise(DictionaryApiService.getWord(word_text))
-            // console.log(data)
-            await this.cacheService.set('word', data)
-            if(data){
-                const reduce_data =  DictionaryApiService.reduceResponseArray(data)
-                // const { data:data_update, error:error_update } = await PromiseHandle.wrapPromise(this.wordService.update(id, reduce_data))
-                // console.log(data_update)
-                res.locals.word = {...word, ...data}
-                HttpResponse.success(res, { ...word, ...reduce_data })
-                // next()
-                return 
-            }
+        const { word:word_text } = word
+        const cache = await this.cacheService.get(`word:${word.word}`)
+        if(cache){
+            // TODO: adicionar os headers
+            res.setHeader('x-cache', 'HIT')
+            HttpResponse.success(res, { ...word, ...cache })
+            next();
+            return
         }
+        
+        const { data, error } = await PromiseHandle.wrapPromise(DictionaryApiService.getWord(word_text))
+        if(data){
+            const reduce_data =  DictionaryApiService.reduceResponseArray(data)
+            await this.cacheService.set(`word:${word.word}`, reduce_data)
+            // console.log(reduce_data)
+            const { data:data_update, error:error_update } = await PromiseHandle.wrapPromise(this.wordService.update(word.id, reduce_data))
+            // console.log("update:",data_update)
+            res.locals.word = {...word, ...data}
+            res.setHeader('x-cache', 'MISS')
+            HttpResponse.success(res, { ...word, ...reduce_data })
+            return 
+        }
+        
+
+        
 
         HttpResponse.success(res, { ...word })
         next();

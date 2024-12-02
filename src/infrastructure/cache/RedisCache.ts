@@ -5,7 +5,6 @@ export class RedisCache {
     
     public async set(key: string, value: any, ttl: number): Promise<void>{
         const redis = await RedisClient.getInstance();
-        console.log(redis)
         const value_string = JSON.stringify(value)
 
         if(ttl){

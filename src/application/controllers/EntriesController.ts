@@ -78,7 +78,7 @@ export class EntriesController {
       return 
     }
     const { data:delete_result, error:error_delete } = await PromiseHandle.wrapPromise(this.favoriteService.delete(data_favorite.id))
-    console.log(delete_result)
+    
     if (error_delete) {
       HttpResponse.error(res);
       return
