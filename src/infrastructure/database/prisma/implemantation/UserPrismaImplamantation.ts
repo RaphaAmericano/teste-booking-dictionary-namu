@@ -1,5 +1,5 @@
 import { prisma } from "../client"
-const { user } = prisma
+const { user, favorite, history } = prisma
 
 export class UserPrismaImplementation {
     static async create(data: any): Promise<any> {
@@ -52,14 +52,27 @@ export class UserPrismaImplementation {
                                 word: true,
                             }
                         }
+                    },
+                    skip,
+                    take: limit,
+                    orderBy:{
+                        created_at: "desc"
                     }
                 }
             }
         })
-        return result
+
+        const totalDocs = await await history.count({
+            where: {
+                user_id: id
+            }
+        })
+
+        return { result, totalDocs }
     }
 
     static async get_user_favorite_by_id(id: string, limit: number = 10, skip: number = 0): Promise<any> {
+
         const result = await user.findUnique({
             where: {
                 id
@@ -73,11 +86,23 @@ export class UserPrismaImplementation {
                                 word: true,
                             }
                         }
+                    },
+                    skip,
+                    take: limit,
+                    orderBy:{
+                        created_at: "desc"
                     }
                 }
             }
         })
-        return result
+
+        const totalDocs = await await favorite.count({
+            where: {
+                user_id: id
+            }
+        })
+
+        return { result, totalDocs }
     }   
 
 }

@@ -53,3 +53,15 @@ export interface DictionaryApiResponse {
 }
 
 export interface UpdateWordDto extends DictionaryApiResponse {}
+
+export interface WordFavoriteHistoryDto {
+    created_at: string,
+    word: {
+      word: string
+    }
+}
+
+export interface WordFavoriteHistoryFormatDto {
+  added: string
+  word: string
+}

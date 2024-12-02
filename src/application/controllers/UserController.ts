@@ -3,6 +3,7 @@ import { UserService } from "../services/UserService";
 import { PromiseHandle } from "../../shared/utils/PromiseHandle";
 import { HttpResponse } from "../../infrastructure/utils/HttpResponse";
 import { User } from "../../domain/entities/User";
+import { WordService } from "../services/WordService";
 export class UserController {
     constructor(private readonly userService: UserService){}
 
@@ -40,14 +41,15 @@ export class UserController {
             HttpResponse.error(res);
             return
         }
+        const { result: { history  }, totalDocs } = data
 
-        const { totalDocs } = data
+        const results = WordService.formatWordToResponse(history)
+
         const totalPages = Math.ceil(totalDocs / limit )
         const hasNext = page < totalDocs
         const hasPrev = page > 1 
-        
 
-        HttpResponse.success(res, data)
+        HttpResponse.success(res, { results, totalDocs, page, totalPages, hasNext, hasPrev })
         return
     }
 
@@ -68,7 +70,15 @@ export class UserController {
             HttpResponse.error(res);
             return
         }
-        HttpResponse.success(res, data)
+        const { result: { favorite  }, totalDocs } = data
+
+        const results = WordService.formatWordToResponse(favorite)
+
+        const totalPages = Math.ceil(totalDocs / limit )
+        const hasNext = page < totalDocs
+        const hasPrev = page > 1 
+
+        HttpResponse.success(res, { results, totalDocs, page, totalPages, hasNext, hasPrev })
         return
     }
 

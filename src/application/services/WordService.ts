@@ -1,7 +1,7 @@
 import axios from "axios";
 import { PromiseHandle } from "../../shared/utils/PromiseHandle";
 import { WordRepositoryImpl } from "../../infrastructure/database/WordRepositoryImpl";
-import { Word } from "../../domain/entities/Word";
+import { Word, WordFavoriteHistoryDto, WordFavoriteHistoryFormatDto } from "../../domain/entities/Word";
 
 export class WordService {
 
@@ -26,6 +26,10 @@ export class WordService {
 
   public static mapWordsToInsert(words: string[] ) {
     return words.map((word) => ({ word }));
+  }
+
+  public static formatWordToResponse(words: WordFavoriteHistoryDto[] ): WordFavoriteHistoryFormatDto[]{
+    return words.map(({ created_at, word }: WordFavoriteHistoryDto) => ({ added: created_at, word: word.word }))
   }
 
   // * Database funcions
