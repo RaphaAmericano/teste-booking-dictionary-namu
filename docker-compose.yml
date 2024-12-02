@@ -28,6 +28,26 @@ services:
     networks:
       - booking-dictionary
 
+  booking-dictionary-app:
+    container_name: booking-dictionary-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    # env_file: .env
+    environment:
+      DATABASE_URL: postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@booking_db:5432/${DATABASE_NAME}
+      REDIS_URL: redis://booking-dictionary-redis:6379
+      SECRET_KEY: ${SECRET_KEY}
+      PORT: ${PORT}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - booking-dictionary-db
+      - redis
+    networks:
+      - booking-dictionary
+
 volumes:
   booking-dictionary-data:
 

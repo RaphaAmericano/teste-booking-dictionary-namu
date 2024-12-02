@@ -15,10 +15,10 @@ export class RequestTreatmentMiddleware {
   }
 
   public static filterJsonInvalidRequest(  error: any, req: Request, res: Response, next:NextFunction  ){
-        if(error instanceof SyntaxError && error.message.includes("JSON")){
-            return HttpResponse.error(res)
-        }
-        next(error)
-    }
+      if(error instanceof SyntaxError && error.message.includes("JSON")){
+          return HttpResponse.error(res)
+      }
+      next(error)
+  }
 
 }

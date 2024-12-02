@@ -19,12 +19,9 @@ export class WordMiddleware {
     ) {}
 
     public async fetchWordDataMiddleware(req: Request, res: Response<{ locals: { word: Word, start: [number, number] }}>, next: any): Promise<void> {
-
         const { word, start } = res.locals
         const { word:word_text } = word
-
         const cache = await this.cacheService.get(`word:${word.word}`)
-        console.log(cache)
         if(cache){
             // TODO: adicionar os headers
             res.setHeader('x-cache', 'HIT')
