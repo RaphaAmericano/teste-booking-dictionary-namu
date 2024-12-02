@@ -14,17 +14,10 @@ const userRepository = new UserRepositoryImpl({
 })
 const userService = new UserService(userRepository)
 const userController = new UserController(userService)
-
-
 const authMiddleware = new AuthMiddleware('jwt');
 
 router.get('/me', authMiddleware.authenticate(), userController.get_user.bind(userController))
-router.get('/me/history', (req: Request, res: Response ) => {
-    res.json({ message: "User history" })
-})
-router.get('/me/favorites', (req: Request, res: Response ) => {
-    res.json({ message: "User Favorites" })
-})
-
+router.get('/me/history', authMiddleware.authenticate(), userController.get_user_history.bind(userController))
+router.get('/me/favorites', authMiddleware.authenticate(), userController.get_user_favorites.bind(userController))
 
 export default router

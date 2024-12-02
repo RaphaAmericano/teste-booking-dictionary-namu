@@ -38,7 +38,7 @@ export class UserPrismaImplementation {
         return result
     }
 
-    static async get_user_history_by_id(id: string): Promise<any> {
+    static async get_user_history_by_id(id: string, limit: number = 10, skip: number = 0): Promise<any> {
         const result = await user.findUnique({
             where: {
                 id
@@ -59,7 +59,7 @@ export class UserPrismaImplementation {
         return result
     }
 
-    static async get_user_favorite_by_id(id: string): Promise<any> {
+    static async get_user_favorite_by_id(id: string, limit: number = 10, skip: number = 0): Promise<any> {
         const result = await user.findUnique({
             where: {
                 id

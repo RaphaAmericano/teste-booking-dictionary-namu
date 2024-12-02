@@ -11,11 +11,11 @@ export class UserService {
         return this.userRepository.get_user_profile(id);
     }
 
-    public get_user_history(id: string): Promise<User> {
-        return this.userRepository.get_user_history(id);
+    public get_user_history(id: string, limit: number, skip: number ): Promise<User> {
+        return this.userRepository.get_user_history(id, limit, skip);
     }
 
-    public get_user_favorites(id: string): Promise<User> {
-        return this.userRepository.get_user_favorites(id);
+    public get_user_favorites(id: string, limit: number, skip: number): Promise<User> {
+        return this.userRepository.get_user_favorites(id, limit, skip);
     }
 }
