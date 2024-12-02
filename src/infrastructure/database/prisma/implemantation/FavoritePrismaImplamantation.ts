@@ -12,4 +12,23 @@ export class FavoritePrismaImplamantation {
     });
     return result;
   }
+
+  static async delete(id: string): Promise<Favorite> {
+    const result = await favorite.delete({
+      where: {
+        id,
+      },
+    });
+    return result
+  }
+
+  static async getWordOfUserId(user_id: string, word_id: string): Promise<Favorite> {
+    const result = await favorite.findFirst({
+      where: {
+        user_id,
+        word_id
+      },
+    });
+    return result as Favorite;
+  }
 }

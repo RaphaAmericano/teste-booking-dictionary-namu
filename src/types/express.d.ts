@@ -5,5 +5,8 @@ declare global {
     interface Locals {
       word?: Word; 
     }
+    interface Request {
+      user?: { id: string}
+    }
   }
 }

@@ -40,7 +40,6 @@ export class WordMiddleware {
     public async saveViewHistoryMiddleware(req: any, res: Response<{ locals: { word: Word }}>, next: any) {
         
         const { user } = req
-        console.log(user)
         const { word: { id } } = res.locals
         console.log(id)
         const { data, error } = await PromiseHandle.wrapPromise(this.historyService.create({user_id: user.id, word_id: id}))
@@ -52,4 +51,5 @@ export class WordMiddleware {
         next()
         return 
     }
+
 }

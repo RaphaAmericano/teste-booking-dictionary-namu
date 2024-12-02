@@ -21,7 +21,9 @@ const wordRepository = new WordRepositoryImpl({
   updateFunction: WordPrismaImplamantation.update
 });
 const favoriteRepository = new FavoriteRepositoryImpl({
-  createFunciton: FavoritePrismaImplamantation.create
+  createFunction: FavoritePrismaImplamantation.create,
+  deleteFunction: FavoritePrismaImplamantation.delete,
+  getWordOfUserIdFunction: FavoritePrismaImplamantation.getWordOfUserId
 })
 
 const historyRepository = new HistoryRepositoryImpl({
@@ -32,7 +34,7 @@ const wordService = new WordService(wordRepository);
 const favoriteService = new FavoriteService(favoriteRepository)
 const historyService = new HistoryService(historyRepository)
 
-const entryController = new EntriesController(wordService);
+const entryController = new EntriesController(wordService, favoriteService);
 
 const entryMiddleware = new EntryMiddleware();
 const wordMiddleware = new WordMiddleware(wordService, favoriteService, historyService);
@@ -47,10 +49,6 @@ router.get(
   wordMiddleware.fetchWordDataMiddleware.bind(wordMiddleware)
 );
 
-router.post("/en/:word/favorite", (req: Request, res: Response) => {
-  res.json({ message: "Entry word favorite Route" });
-});
-router.delete("/en/:word/favorite", (req: Request, res: Response) => {
-  res.json({ message: "Delete favorite word Route" });
-});
+router.post("/en/:word/favorite", authMiddleware.authenticate(), entryController.post_favorite.bind(entryController) );
+router.delete("/en/:word/unfavorite", authMiddleware.authenticate(), entryController.delete_favorite.bind(entryController));
 export default router;
