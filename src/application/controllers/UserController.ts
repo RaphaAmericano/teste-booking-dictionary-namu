@@ -17,7 +17,7 @@ export class UserController {
             this.userService.get_user_profile(id)
         )
         if (error) {
-            HttpResponse.error(res);
+            HttpResponse.error(res, "Error when searching for user");
             return
         }
         HttpResponse.success(res, data)
@@ -38,7 +38,7 @@ export class UserController {
             this.userService.get_user_history(id, Number(limit), skip)
         )
         if (error) {
-            HttpResponse.error(res);
+            HttpResponse.error(res, "Error when searching history");
             return
         }
         const { result: { history  }, totalDocs } = data
@@ -67,7 +67,7 @@ export class UserController {
             this.userService.get_user_favorites(id, Number(limit), skip)
         )
         if (error) {
-            HttpResponse.error(res);
+            HttpResponse.error(res, "Error when searching favorites");
             return
         }
         const { result: { favorite  }, totalDocs } = data

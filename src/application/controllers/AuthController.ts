@@ -22,7 +22,7 @@ export class AuthController {
     );
     
     if (error) {
-      return HttpResponse.error(res);
+      return HttpResponse.error(res, "Error to signup");
     }
 
     req.user = { ...data }

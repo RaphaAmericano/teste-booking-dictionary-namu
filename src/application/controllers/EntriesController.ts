@@ -20,7 +20,7 @@ export class EntriesController {
     const { data, error } = await PromiseHandle.wrapPromise(this.wordService.getAllWords(search, Number(limit), skip))
 
     if (error) {
-      HttpResponse.error(res);
+      HttpResponse.error(res, "Error when search words");
       return 
     } 
     const { totalDocs } = data
@@ -35,7 +35,7 @@ export class EntriesController {
     const { word } = req.params
     const { data, error  } = await PromiseHandle.wrapPromise(this.wordService.getWord(word))
     if (error) {
-      HttpResponse.error(res);
+      HttpResponse.error(res, "Error when search words");
       return 
     } 
     res.locals.word = data
@@ -49,13 +49,13 @@ export class EntriesController {
     const { word } = params;
     const { data:data_word, error:error_word } = await PromiseHandle.wrapPromise(this.wordService.getWord(word))
     if (error_word) {
-      HttpResponse.error(res);
+      HttpResponse.error(res, "Error when save favorite");
       return 
     } 
 
     const { data:data_favorite, error:error_favorite } = await PromiseHandle.wrapPromise(this.favoriteService.create({ user_id: id, word_id: data_word.id  }))
     if (error_favorite) {
-      HttpResponse.error(res);
+      HttpResponse.error(res, "Error when save favorite");
       return 
     } 
     HttpResponse.success(res, data_favorite)
@@ -69,18 +69,18 @@ export class EntriesController {
     const { word } = params;
     const { data:data_word, error:error_word } = await PromiseHandle.wrapPromise(this.wordService.getWord(word))
     if (error_word) {
-      HttpResponse.error(res);
+      HttpResponse.error(res, "Error when delete favorite");
       return 
     } 
     const { data:data_favorite, error:error_favorite } = await PromiseHandle.wrapPromise(this.favoriteService.getWordOfUserId(id, data_word.id))
     if (error_favorite) {
-      HttpResponse.error(res);
+      HttpResponse.error(res, "Error when save favorite");
       return 
     }
     const { data:delete_result, error:error_delete } = await PromiseHandle.wrapPromise(this.favoriteService.delete(data_favorite.id))
     
     if (error_delete) {
-      HttpResponse.error(res);
+      HttpResponse.error(res, "Error when save favorite");
       return
     }
     HttpResponse.success(res, delete_result)
