@@ -1,4 +1,4 @@
-# Development Process of the App
+# Processo de desenvolvimento
 
 ## Primeiras configurações
 Optei por iniciar o desenvolvimento realizando uma configuração basica do servidor, com o esqueleto do roteamento indicado no projeto. Optei por usar o framework Express.
@@ -13,32 +13,18 @@ Escolhi o ORM Prisma para fazer o manipulação do banco de dados.
 - Com o fluxo de dados funcionando procurei melhorar as interfaces criando os DTOs.
 - Para finalizar essa primeira parte de Auth/User, desenvolvi casos de testes para o AuthController e AuthRoutes.
 
-## 2. Design
-- Develop wireframes and prototypes.
-- Establish the architecture of the application.
-- Choose the technology stack and tools.
+## 2. Word
+- Configurei um seed para buscar os dados do JSON indicado e preencher o banco com todo o conteúdo ali.
+- Criei um service para consultar a API de dicionario.
 
-## 3. Development
-- Set up the development environment.
-- Implement features according to the specifications.
-- Conduct regular code reviews and maintain coding standards.
+## 3. Favorite e History
+- Optei por modelar o banco de forma que cada uma dessas entidades tivesse seus dados unicos e se relacionacem com Word e User apenas por meio de chaves estrangeiras.
+Optei por essa abordagem para não duplicar dados em diferentes tabelas e para conseguir selecionar com mais facilidade os dados na hora das consultas do usuario.
 
-## 4. Testing
-- Perform unit testing for individual components.
-- Conduct integration testing to ensure components work together.
-- Execute user acceptance testing (UAT) with stakeholders.
+## Cache
+- Configurei o Redis para salvar todas as requisições que eram feitas para a API do dicionário. - Desenvolvi de forma que fosse que toda palavra consultada fosse verificada no cache do Redis antes de buscar na API externa. 
+- Tentei salvar os outros dados da API no banco, para ser uma outra camada de verificação, mas não consegui terminar de maneira satisfatória a tempo.
 
-## 5. Deployment
-- Prepare the production environment.
-- Deploy the application using CI/CD pipelines.
-- Monitor the application for any issues post-deployment.
-
-## 6. Maintenance
-- Regularly update the application for security and performance.
-- Gather user feedback for future improvements.
-- Plan for new features and enhancements based on user needs.
-
-## Conclusion
-This development process ensures a structured approach to building the application, facilitating collaboration among team members and delivering a high-quality product.
-
->  This is a challenge by [Coodesh](https://coodesh.com/)
+## Clean Code 
+- Procurei desenvolver de maneira que tudo fosse desacoplado ao máximo, sendo fácil modificar as dependencias de serviços externos. 
+- Também procurei desmontar as requisições em middlewares que fizessem sentido, para isolar a tarefa de cada etapa da requisição, e fosse possivel o reuso em outra parte da aplicação.
